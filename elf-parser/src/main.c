@@ -1,6 +1,7 @@
 #include <elfparser/elf_file.h>
 #include <elfparser/elf_header.h>
 #include <elfparser/program_headers.h>
+#include <elfparser/colors.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -32,6 +33,7 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Usage: %s {file_name}\n", argv[0]);
         exit(EXIT_FAILURE);
     }
+    color_init();
     const char *file_name = argv[1];
 
     elf_context ctx; // init the context on the stack
@@ -40,7 +42,7 @@ int main(int argc, char **argv) {
     raise_for_result(result);
     result = elf_phdrs_parse(&ctx);
     raise_for_result(result);
-    elf_header_print(&ctx);
+    elf_phdrs_print(&ctx);
     elf_close(&ctx);
 
     return 0;

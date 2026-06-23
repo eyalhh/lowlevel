@@ -1,5 +1,6 @@
 #include <elf.h>
 #include <elfparser/elf_header.h>
+#include <elfparser/colors.h>
 #include <mytypes.h>
 #include <stdio.h>
 
@@ -8,7 +9,7 @@ void elf_header_print(const elf_context *ctx) {
     printf("ELF Header:\n");
     printf("  Magic:   ");
     for (u32 i = 0; i < EI_NIDENT; i++) {
-        printf("%02x ", (unsigned char)ctx->ehdr->e_ident[i]);
+        printf("%s%02x%s ", c_yellow(), (unsigned char)ctx->ehdr->e_ident[i], c_reset());
     }
     printf("\n");
     printf("  Class:                             %s\n", elf_class_str(ctx));
@@ -19,7 +20,7 @@ void elf_header_print(const elf_context *ctx) {
     printf("  Type:                              %s\n", elf_type_str(ctx->ehdr->e_type));
     printf("  Machine:                           %s\n", elf_machine_str(ctx->ehdr->e_machine));
     printf("  Version:                           %#x\n", EV_CURRENT);
-    printf("  Entry point address:               %p\n", (void *)ctx->ehdr->e_entry);
+    printf("  Entry point address:               %s%p%s\n", c_green(), (void *)ctx->ehdr->e_entry, c_reset());
     printf("  Start of program headers:          %d (bytes into file)\n", (int)ctx->ehdr->e_phoff);
     printf("  Start of section headers:          %d (bytes into file)\n", (int)ctx->ehdr->e_shoff);
     printf("  Flags:                             0x%x\n", ctx->ehdr->e_flags);
