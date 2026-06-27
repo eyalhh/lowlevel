@@ -1,3 +1,4 @@
+#include "elfparser/section_headers.h"
 #include <elfparser/elf_file.h>
 #include <elfparser/elf_header.h>
 #include <elfparser/program_headers.h>
@@ -13,7 +14,7 @@ void raise_for_result(elf_result result) {
             fprintf(stderr, "malformed magic bytes\n");
             exit(EXIT_FAILURE);
             case ELF_ERR_MACHINE:
-            fprintf(stderr, "unsupported machine type (currently we only support x86_64)\n");
+            fprintf(stderr, "unsupported machine type (currently we only support 64bit)\n");
             exit(EXIT_FAILURE);
             case ELF_ERR_TYPE:
             fprintf(stderr, "unsupported elf type (current only exec, fixed address binary static, no pie)\n");
@@ -40,9 +41,9 @@ int main(int argc, char **argv) {
     memset((void *)&ctx, 0, sizeof(ctx)); // memset to 0
     elf_result result = elf_open(file_name, &ctx); // call elf_open
     raise_for_result(result);
-    result = elf_phdrs_parse(&ctx);
+    result = elf_shdrs_parse(&ctx);
     raise_for_result(result);
-    elf_phdrs_print(&ctx);
+    elf_shdrs_print(&ctx);
     elf_close(&ctx);
 
     return 0;
